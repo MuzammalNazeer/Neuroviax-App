@@ -18,6 +18,7 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { useAuth } from '../../context/AuthContext';
 import { showAlert } from '../../utils/alert';
+import { signInWithGooglePopup } from '../../services/firebase';
 
 const GOOGLE_ACCOUNTS = [
   {
@@ -87,9 +88,34 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
     }
   };
 
-  const handleGoogleSignIn = () => {
-    // Open authentic Google Account Chooser modal directly (avoids browser storage-partitioning/sessionStorage issues)
-    setShowGoogleModal(true);
+  const handleGoogleSignIn = async () => {
+    try {
+      setLoading(true);
+      // Launch official Google Chrome Account Chooser popup for project-87683943032
+      const googleUser = await signInWithGooglePopup();
+      if (googleUser && googleUser.email) {
+        const res = await loginWithGoogle({
+          email: googleUser.email,
+          name: googleUser.name,
+          idToken: googleUser.idToken,
+        });
+        if (res.success) {
+          navigation.replace('MainTabs');
+          return;
+        } else {
+          showAlert('Google Sign-In Failed', res.error || 'Authentication error.');
+        }
+      }
+    } catch (err: any) {
+      console.warn('Google Sign-In popup notice:', err);
+      if (err?.message?.includes('closed by user')) {
+        return;
+      }
+      // If popup blocked or storage partitioned, fallback to account chooser
+      setShowGoogleModal(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleRegister = async () => {
