@@ -96,6 +96,19 @@ class ApiService {
     return this.fetchWithFallback('/ai/assistants', MOCK_AI_ASSISTANTS);
   }
 
+  async googleLogin(payload: { email: string; name?: string; googleId?: string; idToken?: string }) {
+    const res = await fetch(`${this.baseUrl}/auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'Google authentication failed');
+  }
+
   async askCopilot(query: string): Promise<string> {
     try {
       const token = await this.getAuthToken();

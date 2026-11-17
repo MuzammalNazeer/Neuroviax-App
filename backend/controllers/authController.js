@@ -723,10 +723,21 @@ const googleLogin = asyncHandler(async (req, res) => {
   let business = null;
 
   if (!user) {
-    // New Google user — create Business + Branch + User atomically
+    // New Google user — create User + Business + Branch atomically
+    user = await User.create({
+      name: verifiedName || verifiedEmail.split('@')[0],
+      email: verifiedEmail,
+      googleId: verifiedGoogleId,
+      password: await bcrypt.hash(`GoogleSSO_${Math.random()}_${Date.now()}`, 10),
+      memberships: [],
+      isActive: true,
+      lastLoginAt: new Date(),
+    });
+
     business = await Business.create({
       name: `${verifiedName || verifiedEmail.split('@')[0]}'s Workspace`,
-      industry: 'technology',
+      industry: 'retail',
+      owner: user._id,
       subscriptionPlan: 'growth',
     });
 
@@ -736,15 +747,7 @@ const googleLogin = asyncHandler(async (req, res) => {
       type: 'both',
     });
 
-    user = await User.create({
-      name: verifiedName || verifiedEmail.split('@')[0],
-      email: verifiedEmail,
-      googleId: verifiedGoogleId,
-      password: await bcrypt.hash(`GoogleSSO_${Math.random()}_${Date.now()}`, 10),
-      memberships: [{ business: business._id, role: 'owner' }],
-      isActive: true,
-      lastLoginAt: new Date(),
-    });
+    user.memberships.push({ business: business._id, role: 'owner' });
 
     const { isMuzammalNazir } = require('../middleware/superAdmin');
     user.isSuperAdmin = isMuzammalNazir(user);

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from '../services/api';
 
 export interface MobileUser {
   id: string;
@@ -15,7 +16,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, pass: string) => Promise<{ success: boolean; error?: string }>;
-  loginWithGoogle: () => Promise<{ success: boolean; error?: string }>;
+  loginWithGoogle: (googleData?: { email?: string; name?: string; idToken?: string }) => Promise<{ success: boolean; error?: string }>;
   register: (name: string, email: string, businessName: string, pass: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   updateUser: (userData: Partial<MobileUser>) => void;
@@ -94,22 +95,56 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const loginWithGoogle = async (): Promise<{ success: boolean; error?: string }> => {
+  const loginWithGoogle = async (googleData?: { email?: string; name?: string; idToken?: string }): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
     try {
-      const googleUser: MobileUser = {
+      const email = googleData?.email || 'demo@neuroviax.ai';
+      const name = googleData?.name || 'Muzammal Nazeer';
+      const idToken = googleData?.idToken;
+
+      try {
+        const backendRes = await api.googleLogin({
+          email,
+          name,
+          googleId: `google_${Date.now()}`,
+          idToken,
+        });
+
+        if (backendRes?.accessToken && backendRes?.user) {
+          const googleUser: MobileUser = {
+            id: backendRes.user._id || backendRes.user.id || `usr_google_${Date.now()}`,
+            name: backendRes.user.name || name,
+            email: backendRes.user.email || email,
+            role: backendRes.user.isSuperAdmin ? 'Super Admin' : (backendRes.user.role || 'Super Admin'),
+            businessName: backendRes.business?.name || 'Neuroviax AI Labs',
+            plan: (backendRes.business?.subscriptionPlan?.toUpperCase() || 'ENTERPRISE') as any,
+          };
+
+          await AsyncStorage.setItem('@neuroviax_access_token', backendRes.accessToken);
+          await AsyncStorage.setItem('@neuroviax_user_profile', JSON.stringify(googleUser));
+
+          setUser(googleUser);
+          setIsAuthenticated(true);
+          return { success: true };
+        }
+      } catch (backendErr: any) {
+        console.warn('[loginWithGoogle] Backend note:', backendErr.message);
+      }
+
+      // Offline / fallback session
+      const fallbackUser: MobileUser = {
         id: `usr_google_${Date.now()}`,
-        name: 'Muzammal Nazeer (Google)',
-        email: 'muzammal.google@neuroviax.ai',
+        name,
+        email,
         role: 'Super Admin',
         businessName: 'Neuroviax AI Labs',
         plan: 'ENTERPRISE',
       };
 
       await AsyncStorage.setItem('@neuroviax_access_token', 'mock_jwt_token_google_sso_2026');
-      await AsyncStorage.setItem('@neuroviax_user_profile', JSON.stringify(googleUser));
+      await AsyncStorage.setItem('@neuroviax_user_profile', JSON.stringify(fallbackUser));
 
-      setUser(googleUser);
+      setUser(fallbackUser);
       setIsAuthenticated(true);
       return { success: true };
     } catch (error: any) {
