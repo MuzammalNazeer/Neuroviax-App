@@ -38,8 +38,8 @@ const AuthContext = createContext<AuthContextType>({
   login: async () => ({ success: false }),
   loginWithGoogle: async () => ({ success: false }),
   register: async () => ({ success: false }),
-  logout: async () => {},
-  updateUser: () => {},
+  logout: async () => { },
+  updateUser: () => { },
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -84,7 +84,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       await AsyncStorage.setItem('@neuroviax_access_token', 'mock_jwt_token_neuroviax_2026');
       await AsyncStorage.setItem('@neuroviax_user_profile', JSON.stringify(matchedUser));
-      
+
       setUser(matchedUser);
       setIsAuthenticated(true);
       return { success: true };
@@ -194,7 +194,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!user) return;
     const updated = { ...user, ...userData };
     setUser(updated);
-    AsyncStorage.setItem('@neuroviax_user_profile', JSON.stringify(updated)).catch(() => {});
+    AsyncStorage.setItem('@neuroviax_user_profile', JSON.stringify(updated)).catch(() => { });
   };
 
   return (

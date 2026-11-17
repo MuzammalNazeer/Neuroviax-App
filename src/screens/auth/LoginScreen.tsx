@@ -22,7 +22,7 @@ import { showAlert } from '../../utils/alert';
 const GOOGLE_ACCOUNTS = [
   {
     name: 'Muzammal Nazeer',
-    email: 'muzammalnazeer@gmail.com',
+    email: 'nazirmuzammal28@gmail.com',
     initials: 'MN',
     badge: 'Super Admin',
     bg: '#059669',
@@ -108,8 +108,11 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       const left = screenW / 2 - width / 2;
       const top = screenH / 2 - height / 2;
 
+      // Cryptographic nonce
+      const nonce = Math.random().toString(36).substring(2) + Date.now().toString(36);
+
       // Real Google Account Chooser popup for project-87683943032
-      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=87683943032-qloquspiaa5umhtckf5t1bfbqtihlhii.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fneuroviax-app.firebaseapp.com%2F__%2Fauth%2Fhandler&response_type=token%20id_token&scope=openid%20profile%20email&prompt=select_account`;
+      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=87683943032-qloquspiaa5umhtckf5t1bfbqtihlhii.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fneuroviax-app.firebaseapp.com%2F__%2Fauth%2Fhandler&response_type=token&scope=email%20profile&prompt=select_account&nonce=${nonce}`;
 
       try {
         const popup = window.open(
@@ -125,7 +128,7 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             if (popup.closed) {
               clearInterval(pollTimer);
               const res = await loginWithGoogle({
-                email: 'muzammalnazeer@gmail.com',
+                email: 'nazirmuzammal28@gmail.com',
                 name: 'Muzammal Nazeer',
               });
               if (res.success) {
