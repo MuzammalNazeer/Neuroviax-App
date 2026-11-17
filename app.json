@@ -17,6 +17,7 @@
     },
     "android": {
       "package": "com.neuroviax.enterprise",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#090d16",
         "foregroundImage": "./assets/android-icon-foreground.png",

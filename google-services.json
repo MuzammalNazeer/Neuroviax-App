@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "87683943032",
+    "project_id": "neuroviax-app",
+    "storage_bucket": "neuroviax-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87683943032:android:a1f8a84066bb0fc1d6fb8d",
+        "android_client_info": {
+          "package_name": "com.neuroviax.enterprise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx2KHDClj_zqe3AD6PbdYjHHdxd0CpkQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
