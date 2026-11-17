@@ -8,6 +8,7 @@ import {
   Platform,
   ScrollView,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -17,13 +18,30 @@ import { useAuth } from '../../context/AuthContext';
 import { showAlert } from '../../utils/alert';
 
 export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const { register } = useAuth();
+  const { register, loginWithGoogle } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [password, setPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    try {
+      const result = await loginWithGoogle();
+      if (result.success) {
+        navigation.replace('MainTabs');
+      } else {
+        showAlert('Google Sign-In Failed', result.error || 'Could not authenticate with Google.');
+      }
+    } catch (err: any) {
+      showAlert('Google Sign-In Error', err?.message || 'Authentication error occurred.');
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
 
   const handleRegister = async () => {
     if (!name.trim() || !email.trim() || !businessName.trim() || !password.trim()) {
@@ -127,6 +145,31 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
               size="lg"
               style={{ marginTop: 12 }}
             />
+
+            {/* Social SSO */}
+            <View style={styles.dividerRow}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>or register with</Text>
+              <View style={styles.dividerLine} />
+            </View>
+
+            <View style={styles.ssoRow}>
+              <TouchableOpacity
+                style={[styles.ssoBtn, googleLoading && { opacity: 0.7 }]}
+                onPress={handleGoogleSignIn}
+                disabled={loading || googleLoading}
+                activeOpacity={0.8}
+              >
+                {googleLoading ? (
+                  <ActivityIndicator size="small" color="#ffffff" style={{ marginRight: 8 }} />
+                ) : (
+                  <Ionicons name="logo-google" size={18} color="#ffffff" style={{ marginRight: 8 }} />
+                )}
+                <Text style={styles.ssoBtnText}>
+                  {googleLoading ? 'Connecting to Google...' : 'Continue with Google'}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Footer */}
@@ -212,5 +255,44 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontWeight: '700',
     fontSize: 13,
+  },
+  dividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: colors.divider,
+  },
+  dividerText: {
+    fontSize: 11,
+    color: colors.textMuted,
+    marginHorizontal: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  ssoRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  ssoBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.cardBgElevated,
+    borderWidth: 1,
+    borderColor: colors.cardBorder,
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    width: '100%',
+  },
+  ssoBtnText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '600',
+    marginLeft: 6,
   },
 });

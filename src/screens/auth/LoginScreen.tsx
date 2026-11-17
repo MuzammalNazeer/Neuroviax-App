@@ -8,6 +8,7 @@ import {
   Platform,
   ScrollView,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -17,10 +18,11 @@ import { useAuth } from '../../context/AuthContext';
 import { showAlert } from '../../utils/alert';
 
 export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const [email, setEmail] = useState('admin@neuroviax.ai');
   const [password, setPassword] = useState('password123');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
 
   const handleLogin = async () => {
@@ -41,6 +43,22 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       navigation.replace('MainTabs');
     } else {
       showAlert('Authentication Failed', result.error || 'Invalid credentials');
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    try {
+      const result = await loginWithGoogle();
+      if (result.success) {
+        navigation.replace('MainTabs');
+      } else {
+        showAlert('Google Sign-In Failed', result.error || 'Could not authenticate with Google.');
+      }
+    } catch (err: any) {
+      showAlert('Google Sign-In Error', err?.message || 'Authentication error occurred.');
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -130,14 +148,19 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
             <View style={styles.ssoRow}>
               <TouchableOpacity
-                style={styles.ssoBtn}
-                onPress={() => {
-                  setEmail('admin@neuroviax.ai');
-                  handleLogin();
-                }}
+                style={[styles.ssoBtn, googleLoading && { opacity: 0.7 }]}
+                onPress={handleGoogleSignIn}
+                disabled={loading || googleLoading}
+                activeOpacity={0.8}
               >
-                <Ionicons name="logo-google" size={18} color="#ffffff" />
-                <Text style={styles.ssoBtnText}>Google Workspace</Text>
+                {googleLoading ? (
+                  <ActivityIndicator size="small" color="#ffffff" style={{ marginRight: 8 }} />
+                ) : (
+                  <Ionicons name="logo-google" size={18} color="#ffffff" style={{ marginRight: 8 }} />
+                )}
+                <Text style={styles.ssoBtnText}>
+                  {googleLoading ? 'Connecting to Google...' : 'Continue with Google'}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

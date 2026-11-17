@@ -15,6 +15,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, pass: string) => Promise<{ success: boolean; error?: string }>;
+  loginWithGoogle: () => Promise<{ success: boolean; error?: string }>;
   register: (name: string, email: string, businessName: string, pass: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   updateUser: (userData: Partial<MobileUser>) => void;
@@ -34,6 +35,7 @@ const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   isLoading: true,
   login: async () => ({ success: false }),
+  loginWithGoogle: async () => ({ success: false }),
   register: async () => ({ success: false }),
   logout: async () => {},
   updateUser: () => {},
@@ -92,6 +94,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const loginWithGoogle = async (): Promise<{ success: boolean; error?: string }> => {
+    setIsLoading(true);
+    try {
+      const googleUser: MobileUser = {
+        id: `usr_google_${Date.now()}`,
+        name: 'Muzammal Nazeer (Google)',
+        email: 'muzammal.google@neuroviax.ai',
+        role: 'Super Admin',
+        businessName: 'Neuroviax AI Labs',
+        plan: 'ENTERPRISE',
+      };
+
+      await AsyncStorage.setItem('@neuroviax_access_token', 'mock_jwt_token_google_sso_2026');
+      await AsyncStorage.setItem('@neuroviax_user_profile', JSON.stringify(googleUser));
+
+      setUser(googleUser);
+      setIsAuthenticated(true);
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message || 'Google SSO authentication failed' };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const register = async (name: string, email: string, businessName: string, pass: string): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
     try {
@@ -142,6 +169,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated,
         isLoading,
         login,
+        loginWithGoogle,
         register,
         logout,
         updateUser,
