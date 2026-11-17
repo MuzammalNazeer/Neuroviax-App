@@ -1,0 +1,52 @@
+const express = require('express');
+const router = express.Router();
+const { protect, requireBusinessContext, optionalAuth } = require('../middleware/auth');
+const { allowRoles } = require('../middleware/rbac');
+const {
+  copilotChat,
+  getCopilotQuickStats,
+} = require('../controllers/aiCopilotController');
+const {
+  generateRecommendations,
+  listRecommendations,
+  approveRecommendation,
+  rejectRecommendation,
+  getDemandForecast,
+  getForecastSummary,
+  getProductRecommendations,
+} = require('../controllers/aiController');
+
+// AI Copilot / Chatboard Endpoints (Dual Mode: Guest & Authenticated with Real Data)
+router.post('/copilot/chat', optionalAuth, copilotChat);
+router.get('/copilot/stats', optionalAuth, getCopilotQuickStats);
+router.post('/chat', optionalAuth, copilotChat);
+
+router.use(protect, requireBusinessContext);
+
+// ML Demand Forecasting Endpoints
+router.get('/forecast', getDemandForecast);
+router.get('/forecast/summary', getForecastSummary);
+
+// Collaborative Filtering Product Recommendations
+router.get('/product-recommendations', getProductRecommendations);
+router.get('/recommendations/collaborative-filtering', getProductRecommendations);
+
+// AI Recommendation Engine Endpoints
+router.post('/recommendations/generate', allowRoles('owner', 'admin', 'manager'), generateRecommendations);
+router.get('/recommendations', listRecommendations);
+router.patch('/recommendations/:id/approve', allowRoles('owner', 'admin', 'manager'), approveRecommendation);
+router.patch('/recommendations/:id/reject', allowRoles('owner', 'admin', 'manager'), rejectRecommendation);
+
+// Isolation Forest Anomaly Detection Endpoints
+const {
+  detectAnomalies,
+  getAnomalyMetrics,
+  resolveAnomaly,
+} = require('../controllers/anomalyController');
+
+router.get('/anomalies', detectAnomalies);
+router.post('/anomalies/detect', detectAnomalies);
+router.get('/anomalies/metrics', getAnomalyMetrics);
+router.post('/anomalies/resolve', allowRoles('owner', 'admin', 'manager', 'accountant'), resolveAnomaly);
+
+module.exports = router;

@@ -1,0 +1,16 @@
+{
+  "name": "neuroviax-app-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Neuroviax AI - Enterprise ERP, AI Agents & Mobile Ecosystem",
+  "scripts": {
+    "start": "npm --prefix mobile run start",
+    "mobile": "npm --prefix mobile run start",
+    "mobile:android": "npm --prefix mobile run android",
+    "mobile:ios": "npm --prefix mobile run ios",
+    "mobile:web": "npm --prefix mobile run web",
+    "backend": "npm --prefix Neuroviax-AI-main/backend run dev",
+    "frontend": "npm --prefix Neuroviax-AI-main/frontend run dev",
+    "dev": "npm --prefix mobile run start"
+  }
+}
