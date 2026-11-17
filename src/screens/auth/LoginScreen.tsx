@@ -8,13 +8,13 @@ import {
   Platform,
   ScrollView,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { useAuth } from '../../context/AuthContext';
+import { showAlert } from '../../utils/alert';
 
 export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { login } = useAuth();
@@ -25,11 +25,11 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const handleLogin = async () => {
     if (!email.trim()) {
-      Alert.alert('Validation Error', 'Please enter your corporate email.');
+      showAlert('Validation Error', 'Please enter your corporate email.');
       return;
     }
     if (!password.trim()) {
-      Alert.alert('Validation Error', 'Please enter your password.');
+      showAlert('Validation Error', 'Please enter your password.');
       return;
     }
 
@@ -40,7 +40,7 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     if (result.success) {
       navigation.replace('MainTabs');
     } else {
-      Alert.alert('Authentication Failed', result.error || 'Invalid credentials');
+      showAlert('Authentication Failed', result.error || 'Invalid credentials');
     }
   };
 

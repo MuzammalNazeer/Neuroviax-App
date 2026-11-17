@@ -7,7 +7,6 @@ import {
   FlatList,
   TouchableOpacity,
   Modal,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -17,6 +16,7 @@ import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { MOCK_EXPENSES, ExpenseItem } from '../../services/mockData';
+import { showAlert } from '../../utils/alert';
 
 export const FinanceScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [expenses, setExpenses] = useState<ExpenseItem[]>(MOCK_EXPENSES);
@@ -29,7 +29,7 @@ export const FinanceScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
 
   const handleAddExpense = () => {
     if (!title || !amount) {
-      Alert.alert('Required', 'Please enter expense description and amount.');
+      showAlert('Required', 'Please enter expense description and amount.');
       return;
     }
     const newExp: ExpenseItem = {
@@ -44,7 +44,7 @@ export const FinanceScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
     setModalVisible(false);
     setTitle('');
     setAmount('');
-    Alert.alert('Logged', 'Expense logged to financial ledger.');
+    showAlert('Logged', 'Expense logged to financial ledger.');
   };
 
   return (
@@ -52,6 +52,8 @@ export const FinanceScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
       <Header
         title="Finance & Expenses"
         subtitle="Ledger & Cash Flow Tracking"
+        showBack
+        onBack={() => navigation.goBack()}
         rightAction={{
           icon: 'add-circle-outline',
           onPress: () => setModalVisible(true),

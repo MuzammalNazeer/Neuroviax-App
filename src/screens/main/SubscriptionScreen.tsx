@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -15,6 +14,7 @@ import { Card } from '../../components/Card';
 import { Button } from '../../components/Button';
 import { Badge } from '../../components/Badge';
 import { useAuth } from '../../context/AuthContext';
+import { showAlert } from '../../utils/alert';
 
 const PLANS = [
   {
@@ -71,7 +71,7 @@ export const SubscriptionScreen: React.FC<{ navigation: any }> = ({ navigation }
   const handleSelectPlan = (planId: string) => {
     setSelectedPlan(planId);
     updateUser({ plan: planId as any });
-    Alert.alert('Subscription Updated', `Your business is now on the ${planId} tier.`);
+    showAlert('Subscription Updated', `Your business is now on the ${planId} tier.`);
   };
 
   return (

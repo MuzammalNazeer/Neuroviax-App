@@ -6,19 +6,19 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
 import { Header } from '../../components/Header';
 import { Card } from '../../components/Card';
 import { Button } from '../../components/Button';
+import { showAlert } from '../../utils/alert';
 
 export const ReportsScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [period, setPeriod] = useState<'30d' | '90d' | '1y'>('30d');
 
   const handleExport = (format: string) => {
-    Alert.alert('Report Exported', `Generated Neuroviax_${period}_Executive_Summary.${format.toLowerCase()} successfully.`);
+    showAlert('Report Exported', `Generated Neuroviax_${period}_Executive_Summary.${format.toLowerCase()} successfully.`);
   };
 
   return (

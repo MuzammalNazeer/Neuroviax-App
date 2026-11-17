@@ -88,6 +88,11 @@ export const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) 
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
+        getItemLayout={(_, index) => ({
+          length: width,
+          offset: width * index,
+          index,
+        })}
         onMomentumScrollEnd={(e) => {
           const index = Math.round(e.nativeEvent.contentOffset.x / width);
           setCurrentIndex(index);

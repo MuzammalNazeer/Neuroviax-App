@@ -7,7 +7,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Switch,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -18,6 +17,7 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { useAuth } from '../../context/AuthContext';
 import { api, DEFAULT_API_URL } from '../../services/api';
+import { showAlert } from '../../utils/alert';
 
 export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { user, logout } = useAuth();
@@ -27,11 +27,11 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
 
   const handleSaveApiUrl = async () => {
     await api.setBaseUrl(apiUrl);
-    Alert.alert('Configuration Saved', `Active API Endpoint set to:\n${apiUrl}`);
+    showAlert('Configuration Saved', `Active API Endpoint set to:\n${apiUrl}`);
   };
 
   const handleLogout = () => {
-    Alert.alert('Confirm Sign Out', 'Are you sure you want to exit the Neuroviax cockpit?', [
+    showAlert('Confirm Sign Out', 'Are you sure you want to exit the Neuroviax cockpit?', [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'Sign Out',

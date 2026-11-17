@@ -7,7 +7,6 @@ import {
   FlatList,
   TouchableOpacity,
   Modal,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -16,6 +15,7 @@ import { Card } from '../../components/Card';
 import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
+import { showAlert } from '../../utils/alert';
 
 interface TeamMember {
   id: string;
@@ -41,7 +41,7 @@ export const TeamScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const handleInvite = () => {
     if (!name || !email) {
-      Alert.alert('Required', 'Please enter member name and corporate email.');
+      showAlert('Required', 'Please enter member name and corporate email.');
       return;
     }
     const newMember: TeamMember = {
@@ -55,7 +55,7 @@ export const TeamScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     setModalVisible(false);
     setName('');
     setEmail('');
-    Alert.alert('Invitation Dispatched', `Invited ${newMember.name} as ${newMember.role}.`);
+    showAlert('Invitation Dispatched', `Invited ${newMember.name} as ${newMember.role}.`);
   };
 
   return (

@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   SafeAreaView,
   TextInput,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../context/AuthContext';
+import { showAlert } from '../../utils/alert';
 
 export const VerifyOTPScreen: React.FC<{ route: any; navigation: any }> = ({
   route,
@@ -40,7 +40,7 @@ export const VerifyOTPScreen: React.FC<{ route: any; navigation: any }> = ({
   const handleVerify = async () => {
     const code = otp.join('');
     if (code.length < 6) {
-      Alert.alert('Incomplete Code', 'Please enter all 6 digits of the verification code.');
+      showAlert('Incomplete Code', 'Please enter all 6 digits of the verification code.');
       return;
     }
 
@@ -63,7 +63,7 @@ export const VerifyOTPScreen: React.FC<{ route: any; navigation: any }> = ({
     if (res.success) {
       navigation.replace('MainTabs');
     } else {
-      Alert.alert('Verification Failed', res.error || 'Invalid code');
+      showAlert('Verification Failed', res.error || 'Invalid code');
     }
   };
 

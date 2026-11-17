@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -14,6 +13,7 @@ import { Header } from '../../components/Header';
 import { Card } from '../../components/Card';
 import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
+import { showAlert } from '../../utils/alert';
 
 export const AdminDashboardScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
@@ -117,7 +117,7 @@ export const AdminDashboardScreen: React.FC<{ navigation: any }> = ({ navigation
           variant="secondary"
           size="md"
           icon="refresh-outline"
-          onPress={() => Alert.alert('Cache Purged', 'Redis in-memory cache flushed successfully.')}
+          onPress={() => showAlert('Cache Purged', 'Redis in-memory cache flushed successfully.')}
           style={{ marginTop: 10 }}
         />
 

@@ -218,32 +218,38 @@ export const DashboardScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.assistantScroll}>
           {assistants.map((ast) => (
-            <Card key={ast.id} style={styles.assistantCard} variant="elevated">
-              <View style={styles.astTop}>
-                <View style={[styles.astIconWrap, { backgroundColor: `${ast.color}20` }]}>
-                  <Ionicons name={ast.icon as any} size={20} color={ast.color} />
+            <TouchableOpacity
+              key={ast.id}
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate('AIInsights')}
+            >
+              <Card style={styles.assistantCard} variant="elevated">
+                <View style={styles.astTop}>
+                  <View style={[styles.astIconWrap, { backgroundColor: `${ast.color}20` }]}>
+                    <Ionicons name={ast.icon as any} size={20} color={ast.color} />
+                  </View>
+                  <Badge
+                    label={`${ast.confidence}% CONF`}
+                    variant="success"
+                    size="sm"
+                  />
                 </View>
-                <Badge
-                  label={`${ast.confidence}% CONF`}
-                  variant="success"
-                  size="sm"
-                />
-              </View>
-              <Text style={styles.astName}>{ast.name}</Text>
-              <Text style={styles.astDomain}>{ast.domain}</Text>
-              <View style={styles.astOutputBox}>
-                <Text style={styles.astOutput} numberOfLines={2}>
-                  {ast.output}
-                </Text>
-              </View>
-              <View style={styles.astFooter}>
-                <View style={styles.astActivePill}>
-                  <View style={[styles.astStatusDot, { backgroundColor: ast.color }]} />
-                  <Text style={styles.astStatusText}>{ast.status.toUpperCase()}</Text>
+                <Text style={styles.astName}>{ast.name}</Text>
+                <Text style={styles.astDomain}>{ast.domain}</Text>
+                <View style={styles.astOutputBox}>
+                  <Text style={styles.astOutput} numberOfLines={2}>
+                    {ast.output}
+                  </Text>
                 </View>
-                <Ionicons name="chevron-forward" size={16} color={colors.textSecondary} />
-              </View>
-            </Card>
+                <View style={styles.astFooter}>
+                  <View style={styles.astActivePill}>
+                    <View style={[styles.astStatusDot, { backgroundColor: ast.color }]} />
+                    <Text style={styles.astStatusText}>{ast.status.toUpperCase()}</Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={16} color={colors.textSecondary} />
+                </View>
+              </Card>
+            </TouchableOpacity>
           ))}
         </ScrollView>
 

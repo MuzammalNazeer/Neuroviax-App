@@ -7,7 +7,6 @@ import {
   FlatList,
   TouchableOpacity,
   Modal,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -17,6 +16,7 @@ import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { MOCK_PRODUCTS, ProductItem } from '../../services/mockData';
+import { showAlert } from '../../utils/alert';
 
 export const InventoryScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [items, setItems] = useState<ProductItem[]>(MOCK_PRODUCTS);
@@ -40,7 +40,7 @@ export const InventoryScreen: React.FC<{ navigation: any }> = ({ navigation }) =
       )
     );
 
-    Alert.alert('Stock Updated', `${selectedProduct.name} stock adjusted to ${newStock} units.`);
+    showAlert('Stock Updated', `${selectedProduct.name} stock adjusted to ${newStock} units.`);
     setSelectedProduct(null);
     setAdjustAmount('');
   };
@@ -52,7 +52,7 @@ export const InventoryScreen: React.FC<{ navigation: any }> = ({ navigation }) =
         subtitle="Real-time Multi-Facility Tracking"
         rightAction={{
           icon: 'refresh-outline',
-          onPress: () => Alert.alert('Inventory Synced', 'All warehouse nodes updated.'),
+          onPress: () => showAlert('Inventory Synced', 'All warehouse nodes updated.'),
         }}
       />
 

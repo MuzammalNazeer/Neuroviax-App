@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -17,6 +16,7 @@ import { Card } from '../../components/Card';
 import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
 import { MOCK_ORDERS, OrderItem } from '../../services/mockData';
+import { showAlert } from '../../utils/alert';
 
 export const OrdersScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [orders, setOrders] = useState<OrderItem[]>(MOCK_ORDERS);
@@ -38,7 +38,7 @@ export const OrdersScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       prev.map((ord) => (ord.id === selectedOrder.id ? { ...ord, status: newStatus } : ord))
     );
     setSelectedOrder({ ...selectedOrder, status: newStatus });
-    Alert.alert('Status Updated', `Order ${selectedOrder.orderNumber} is now ${newStatus}.`);
+    showAlert('Status Updated', `Order ${selectedOrder.orderNumber} is now ${newStatus}.`);
   };
 
   const handleCreateOrder = () => {
@@ -54,7 +54,7 @@ export const OrdersScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       paymentMethod: 'Credit Card',
     };
     setOrders([newOrd, ...orders]);
-    Alert.alert('Order Created', `Order ${newOrd.orderNumber} logged successfully.`);
+    showAlert('Order Created', `Order ${newOrd.orderNumber} logged successfully.`);
   };
 
   return (

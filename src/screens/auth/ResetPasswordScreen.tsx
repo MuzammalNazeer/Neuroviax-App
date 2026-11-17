@@ -5,12 +5,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
+import { showAlert } from '../../utils/alert';
 
 export const ResetPasswordScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [newPassword, setNewPassword] = useState('');
@@ -19,18 +19,18 @@ export const ResetPasswordScreen: React.FC<{ navigation: any }> = ({ navigation 
 
   const handleReset = () => {
     if (!newPassword || newPassword.length < 8) {
-      Alert.alert('Password Length', 'Password must be at least 8 characters.');
+      showAlert('Password Length', 'Password must be at least 8 characters.');
       return;
     }
     if (newPassword !== confirmPassword) {
-      Alert.alert('Mismatch', 'Passwords do not match.');
+      showAlert('Mismatch', 'Passwords do not match.');
       return;
     }
 
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      Alert.alert('Success', 'Password has been updated successfully. Please sign in.', [
+      showAlert('Success', 'Password has been updated successfully. Please sign in.', [
         { text: 'OK', onPress: () => navigation.navigate('Login') },
       ]);
     }, 1000);

@@ -7,7 +7,6 @@ import {
   FlatList,
   TouchableOpacity,
   Modal,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -17,6 +16,7 @@ import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { MOCK_PRODUCTS, ProductItem } from '../../services/mockData';
+import { showAlert } from '../../utils/alert';
 
 export const ProductsScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [products, setProducts] = useState<ProductItem[]>(MOCK_PRODUCTS);
@@ -29,7 +29,7 @@ export const ProductsScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
 
   const handleAddProduct = () => {
     if (!name || !price || !stock) {
-      Alert.alert('Required', 'Please complete the product details.');
+      showAlert('Required', 'Please complete the product details.');
       return;
     }
     const newProd: ProductItem = {
@@ -50,7 +50,7 @@ export const ProductsScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
     setSku('');
     setPrice('');
     setStock('');
-    Alert.alert('Product Added', `${newProd.name} added to catalog.`);
+    showAlert('Product Added', `${newProd.name} added to catalog.`);
   };
 
   return (
@@ -58,6 +58,8 @@ export const ProductsScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
       <Header
         title="Products Catalog"
         subtitle={`${products.length} Active SKUs`}
+        showBack
+        onBack={() => navigation.goBack()}
         rightAction={{
           icon: 'add-circle-outline',
           onPress: () => setModalVisible(true),

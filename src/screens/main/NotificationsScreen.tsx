@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   FlatList,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
@@ -14,13 +13,14 @@ import { Header } from '../../components/Header';
 import { Card } from '../../components/Card';
 import { Badge } from '../../components/Badge';
 import { MOCK_NOTIFICATIONS, NotificationItem } from '../../services/mockData';
+import { showAlert } from '../../utils/alert';
 
 export const NotificationsScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [notifications, setNotifications] = useState<NotificationItem[]>(MOCK_NOTIFICATIONS);
 
   const markAllRead = () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-    Alert.alert('Notifications', 'All notifications marked as read.');
+    showAlert('Notifications', 'All notifications marked as read.');
   };
 
   const toggleRead = (id: string) => {

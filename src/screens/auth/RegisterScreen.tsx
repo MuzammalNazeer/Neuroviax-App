@@ -8,13 +8,13 @@ import {
   Platform,
   ScrollView,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { useAuth } from '../../context/AuthContext';
+import { showAlert } from '../../utils/alert';
 
 export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { register } = useAuth();
@@ -27,11 +27,11 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
 
   const handleRegister = async () => {
     if (!name.trim() || !email.trim() || !businessName.trim() || !password.trim()) {
-      Alert.alert('Missing Fields', 'Please complete all required fields.');
+      showAlert('Missing Fields', 'Please complete all required fields.');
       return;
     }
     if (!agreeTerms) {
-      Alert.alert('Terms Agreement', 'Please accept the Enterprise Service Agreement.');
+      showAlert('Terms Agreement', 'Please accept the Enterprise Service Agreement.');
       return;
     }
 

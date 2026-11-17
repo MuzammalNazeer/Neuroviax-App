@@ -6,13 +6,13 @@ import {
   SafeAreaView,
   FlatList,
   Switch,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
 import { Header } from '../../components/Header';
 import { Card } from '../../components/Card';
 import { Badge } from '../../components/Badge';
+import { showAlert } from '../../utils/alert';
 
 interface IntegrationChannel {
   id: string;
@@ -40,7 +40,7 @@ export const IntegrationsScreen: React.FC<{ navigation: any }> = ({ navigation }
         item.id === id ? { ...item, connected: !item.connected } : item
       )
     );
-    Alert.alert('Channel Updated', 'Connection state updated.');
+    showAlert('Channel Updated', 'Connection state updated.');
   };
 
   return (

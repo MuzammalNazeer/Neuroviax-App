@@ -5,12 +5,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
+import { showAlert } from '../../utils/alert';
 
 export const ForgotPasswordScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ export const ForgotPasswordScreen: React.FC<{ navigation: any }> = ({ navigation
 
   const handleSendCode = () => {
     if (!email.trim()) {
-      Alert.alert('Required', 'Please enter your corporate email address.');
+      showAlert('Required', 'Please enter your corporate email address.');
       return;
     }
     setLoading(true);
