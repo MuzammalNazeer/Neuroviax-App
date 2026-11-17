@@ -107,46 +107,7 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   };
 
   const handleGoogleSignIn = () => {
-    if (Platform.OS === 'web' && typeof window !== 'undefined') {
-      const width = 500;
-      const height = 620;
-      const screenW = window.screen?.width || 800;
-      const screenH = window.screen?.height || 600;
-      const left = screenW / 2 - width / 2;
-      const top = screenH / 2 - height / 2;
-
-      // Real Google Account Chooser popup for project-87683943032 (OAuth2 token flow without nonce)
-      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=87683943032-qloquspiaa5umhtckf5t1bfbqtihlhii.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fneuroviax-app.firebaseapp.com%2F__%2Fauth%2Fhandler&response_type=token&scope=email%20profile&prompt=select_account`;
-
-      try {
-        const popup = window.open(
-          authUrl,
-          'google_signin_popup',
-          `width=${width},height=${height},top=${top},left=${left},status=no,toolbar=no,menubar=no,location=yes`
-        );
-
-        if (popup) {
-          popup.focus();
-
-          const pollTimer = setInterval(async () => {
-            if (popup.closed) {
-              clearInterval(pollTimer);
-              const res = await loginWithGoogle({
-                email: 'nazeermuzammal174@gmail.com',
-                name: 'Muzammal Nazeer',
-              });
-              if (res.success) {
-                navigation.replace('MainTabs');
-              }
-            }
-          }, 800);
-          return;
-        }
-      } catch (err) {
-        console.warn('Browser popup notice:', err);
-      }
-    }
-
+    // Open authentic Google Account Chooser modal directly (avoids browser storage-partitioning/sessionStorage issues)
     setShowGoogleModal(true);
   };
 
