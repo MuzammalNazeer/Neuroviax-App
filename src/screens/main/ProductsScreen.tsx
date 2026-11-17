@@ -84,15 +84,15 @@ export const ProductsScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
                   item.status === 'in_stock'
                     ? 'IN STOCK'
                     : item.status === 'low_stock'
-                    ? 'LOW STOCK'
-                    : 'OUT OF STOCK'
+                      ? 'LOW STOCK'
+                      : 'OUT OF STOCK'
                 }
                 variant={
                   item.status === 'in_stock'
                     ? 'success'
                     : item.status === 'low_stock'
-                    ? 'warning'
-                    : 'danger'
+                      ? 'warning'
+                      : 'danger'
                 }
                 size="sm"
               />

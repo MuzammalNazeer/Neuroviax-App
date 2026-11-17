@@ -123,8 +123,8 @@ export const OrdersScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                       item.status === 'completed'
                         ? 'success'
                         : item.status === 'processing'
-                        ? 'info'
-                        : 'warning'
+                          ? 'info'
+                          : 'warning'
                     }
                     size="sm"
                   />

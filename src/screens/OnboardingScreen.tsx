@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
+  useWindowDimensions,
   FlatList,
   TouchableOpacity,
   SafeAreaView,
@@ -12,8 +12,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { Button } from '../components/Button';
 import { useAuth } from '../context/AuthContext';
-
-const { width, height } = Dimensions.get('window');
 
 interface Slide {
   id: string;
@@ -30,7 +28,8 @@ const SLIDES: Slide[] = [
     icon: 'git-network',
     title: 'Autonomous Business',
     highlight: 'Optimization',
-    description: 'Self-regulating ERP loops that detect inventory drops, predict demand spikes, and automate procurement decisions in real-time.',
+    description:
+      'Self-regulating ERP loops that detect inventory drops, predict demand spikes, and automate procurement decisions in real-time.',
     accentColor: colors.primary,
   },
   {
@@ -38,7 +37,8 @@ const SLIDES: Slide[] = [
     icon: 'chatbubbles',
     title: 'Executive AI Copilot',
     highlight: 'At Your Fingertips',
-    description: 'Instant multi-modal intelligence for sales forecasts, anomaly explanations, and strategic executive recommendations.',
+    description:
+      'Instant multi-modal intelligence for sales forecasts, anomaly explanations, and strategic executive recommendations.',
     accentColor: colors.secondaryLight,
   },
   {
@@ -46,22 +46,45 @@ const SLIDES: Slide[] = [
     icon: 'shield-checkmark',
     title: 'Full Stack ERP',
     highlight: 'Unified Operations',
-    description: 'From live inventory & multi-channel orders to cash flow forecasting and supplier logistics—all in one high-performance mobile app.',
+    description:
+      'From live inventory & multi-channel orders to cash flow forecasting and supplier logistics—all in one high-performance mobile app.',
     accentColor: '#f59e0b',
   },
 ];
 
 export const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const { width } = useWindowDimensions();
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const { login } = useAuth();
 
+  const scrollToSlide = (index: number) => {
+    if (index >= 0 && index < SLIDES.length) {
+      setCurrentIndex(index);
+      try {
+        flatListRef.current?.scrollToOffset({
+          offset: index * width,
+          animated: true,
+        });
+      } catch {
+        flatListRef.current?.scrollToIndex({
+          index,
+          animated: true,
+        });
+      }
+    }
+  };
+
   const handleNext = () => {
     if (currentIndex < SLIDES.length - 1) {
-      flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
+      scrollToSlide(currentIndex + 1);
     } else {
-      navigation.navigate('Login');
+      navigation.replace('Login');
     }
+  };
+
+  const handleSkip = () => {
+    navigation.replace('Login');
   };
 
   const handleDemoQuickAccess = async () => {
@@ -71,17 +94,27 @@ export const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) 
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Top Header Bar */}
       <View style={styles.topBar}>
         <View style={styles.brandRow}>
           <Ionicons name="hardware-chip" size={20} color={colors.primary} />
           <Text style={styles.brandName}>Neuroviax AI</Text>
         </View>
-        <TouchableOpacity onPress={handleDemoQuickAccess} style={styles.skipBtn}>
-          <Text style={styles.skipText}>Demo Mode</Text>
-          <Ionicons name="flash" size={14} color={colors.primary} style={{ marginLeft: 4 }} />
-        </TouchableOpacity>
+
+        <View style={styles.topRightActions}>
+          <TouchableOpacity onPress={handleDemoQuickAccess} style={styles.demoBtn} activeOpacity={0.8}>
+            <Ionicons name="flash" size={13} color={colors.primary} style={{ marginRight: 4 }} />
+            <Text style={styles.demoBtnText}>Demo Mode</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleSkip} style={styles.topSkipBtn} activeOpacity={0.7}>
+            <Text style={styles.topSkipText}>Skip</Text>
+            <Ionicons name="chevron-forward" size={14} color={colors.textSecondary} />
+          </TouchableOpacity>
+        </View>
       </View>
 
+      {/* Carousel */}
       <FlatList
         ref={flatListRef}
         data={SLIDES}
@@ -93,13 +126,23 @@ export const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) 
           offset: width * index,
           index,
         })}
+        onScrollToIndexFailed={(info) => {
+          setTimeout(() => {
+            flatListRef.current?.scrollToOffset({
+              offset: info.index * width,
+              animated: true,
+            });
+          }, 50);
+        }}
         onMomentumScrollEnd={(e) => {
           const index = Math.round(e.nativeEvent.contentOffset.x / width);
-          setCurrentIndex(index);
+          if (index >= 0 && index < SLIDES.length) {
+            setCurrentIndex(index);
+          }
         }}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.slide}>
+          <View style={[styles.slide, { width }]}>
             <View style={[styles.iconCircle, { borderColor: `${item.accentColor}40` }]}>
               <View style={[styles.iconInner, { backgroundColor: `${item.accentColor}20` }]}>
                 <Ionicons name={item.icon} size={64} color={item.accentColor} />
@@ -116,28 +159,58 @@ export const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) 
         )}
       />
 
-      {/* Pagination dots */}
+      {/* Pagination Dots (Clickable) */}
       <View style={styles.pagination}>
         {SLIDES.map((_, i) => (
-          <View
+          <TouchableOpacity
             key={i}
-            style={[
-              styles.dot,
-              currentIndex === i && styles.activeDot,
-            ]}
-          />
+            onPress={() => scrollToSlide(i)}
+            activeOpacity={0.7}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <View
+              style={[
+                styles.dot,
+                currentIndex === i && styles.activeDot,
+              ]}
+            />
+          </TouchableOpacity>
         ))}
       </View>
 
-      {/* Action Buttons */}
+      {/* Action Buttons (Skip & Next / Get Started) */}
       <View style={styles.footer}>
-        <Button
-          title={currentIndex === SLIDES.length - 1 ? 'Get Started' : 'Next'}
-          onPress={handleNext}
-          icon="arrow-forward"
-          iconPosition="right"
-          size="lg"
-        />
+        {currentIndex < SLIDES.length - 1 ? (
+          <View style={styles.actionRow}>
+            <View style={{ flex: 1, marginRight: 10 }}>
+              <Button
+                title="Skip"
+                variant="outline"
+                onPress={handleSkip}
+                size="lg"
+              />
+            </View>
+            <View style={{ flex: 1.5 }}>
+              <Button
+                title="Next"
+                variant="primary"
+                onPress={handleNext}
+                icon="arrow-forward"
+                iconPosition="right"
+                size="lg"
+              />
+            </View>
+          </View>
+        ) : (
+          <Button
+            title="Get Started"
+            variant="primary"
+            onPress={handleNext}
+            icon="arrow-forward"
+            iconPosition="right"
+            size="lg"
+          />
+        )}
 
         <View style={styles.bottomLinkRow}>
           <Text style={styles.haveAccountText}>Already have an account? </Text>
@@ -173,23 +246,39 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     marginLeft: 8,
   },
-  skipBtn: {
+  topRightActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  demoBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(16, 185, 129, 0.15)',
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 20,
     borderWidth: 1,
     borderColor: 'rgba(16, 185, 129, 0.3)',
+    marginRight: 8,
   },
-  skipText: {
+  demoBtnText: {
     fontSize: 12,
     fontWeight: '700',
     color: colors.primary,
   },
+  topSkipBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+  },
+  topSkipText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.textSecondary,
+    marginRight: 2,
+  },
   slide: {
-    width,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 32,
@@ -201,7 +290,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 36,
   },
   iconInner: {
     width: 110,
@@ -229,7 +318,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: 18,
   },
   dot: {
     width: 8,
@@ -245,6 +334,11 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: 24,
     paddingBottom: 24,
+  },
+  actionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   bottomLinkRow: {
     flexDirection: 'row',
