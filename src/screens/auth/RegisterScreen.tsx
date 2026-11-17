@@ -22,10 +22,17 @@ import { showAlert } from '../../utils/alert';
 const GOOGLE_ACCOUNTS = [
   {
     name: 'Muzammal Nazeer',
-    email: 'admin@neuroviax.ai',
+    email: 'muzammalnazeer@gmail.com',
     initials: 'MN',
     badge: 'Super Admin',
     bg: '#059669',
+  },
+  {
+    name: 'Muzammal Nazeer (Enterprise)',
+    email: 'admin@neuroviax.ai',
+    initials: 'MN',
+    badge: 'Enterprise Cockpit',
+    bg: '#047857',
   },
   {
     name: 'Demo Store Owner',
