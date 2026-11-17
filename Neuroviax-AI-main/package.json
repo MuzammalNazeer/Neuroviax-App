@@ -1,18 +1,21 @@
 {
-  "name": "neuroviax-mern-root",
+  "name": "neuroviax-ai-workspace",
   "version": "1.0.0",
   "private": true,
-  "description": "Neuroviax AI - Root workspace orchestrator",
+  "description": "Neuroviax AI - Enterprise ERP, AI Agents & React Native Mobile Ecosystem",
   "scripts": {
-    "dev": "npm --prefix frontend run dev",
-    "dev:all": "concurrently -n \"backend,website,admin\" -c \"green,cyan,magenta\" \"npm --prefix backend run dev\" \"npm --prefix frontend run dev:website\" \"npm --prefix frontend run dev:admin\"",
+    "start": "npm --prefix mobile run start",
+    "mobile": "npm --prefix mobile run start",
+    "mobile:android": "npm --prefix mobile run android",
+    "mobile:ios": "npm --prefix mobile run ios",
+    "mobile:web": "npm --prefix mobile run web",
+    "dev:mobile": "npm --prefix mobile run start",
+    "dev": "npm --prefix mobile run start",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
     "dev:website": "npm --prefix frontend run dev:website",
     "dev:admin": "npm --prefix frontend run dev:admin",
-    "dev:frontend": "npm --prefix frontend run dev",
-    "dev:backend": "npm --prefix backend run dev",
     "seed": "npm --prefix backend run seed",
-    "mobile": "npm --prefix ../mobile run start",
-    "dev:mobile": "npm --prefix ../mobile run start",
     "build": "npm --prefix frontend run build"
   }
 }
