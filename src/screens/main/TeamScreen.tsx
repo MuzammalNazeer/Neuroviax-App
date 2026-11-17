@@ -158,6 +158,9 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: 16,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   card: {
     marginBottom: 10,
@@ -208,6 +211,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
+    width: '100%',
+    maxWidth: 600,
+    alignSelf: 'center',
   },
   modalHeader: {
     flexDirection: 'row',

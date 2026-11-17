@@ -228,6 +228,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     backgroundColor: colors.background,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   searchBox: {
     flexDirection: 'row',
@@ -249,6 +252,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 10,
     gap: 8,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   filterPill: {
     paddingHorizontal: 12,
@@ -273,6 +279,9 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 16,
     paddingBottom: 24,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   orderCard: {
     marginBottom: 10,
@@ -328,6 +337,9 @@ const styles = StyleSheet.create({
     borderColor: colors.cardBorder,
     padding: 20,
     maxHeight: '80%',
+    width: '100%',
+    maxWidth: 600,
+    alignSelf: 'center',
   },
   modalHeader: {
     flexDirection: 'row',

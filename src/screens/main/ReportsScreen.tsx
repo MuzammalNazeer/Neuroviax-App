@@ -140,6 +140,9 @@ const styles = StyleSheet.create({
     gap: 8,
     borderBottomWidth: 1,
     borderBottomColor: colors.divider,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   periodBtn: {
     flex: 1,
@@ -161,6 +164,9 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   kpiCard: {
     padding: 16,

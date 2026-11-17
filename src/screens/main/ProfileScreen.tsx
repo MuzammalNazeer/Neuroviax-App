@@ -218,6 +218,9 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+    width: '100%',
+    maxWidth: 760,
+    alignSelf: 'center',
   },
   userCard: {
     alignItems: 'center',

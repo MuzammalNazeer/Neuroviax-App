@@ -143,18 +143,20 @@ export const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) 
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={[styles.slide, { width }]}>
-            <View style={[styles.iconCircle, { borderColor: `${item.accentColor}40` }]}>
-              <View style={[styles.iconInner, { backgroundColor: `${item.accentColor}20` }]}>
-                <Ionicons name={item.icon} size={64} color={item.accentColor} />
+            <View style={styles.slideInner}>
+              <View style={[styles.iconCircle, { borderColor: `${item.accentColor}40` }]}>
+                <View style={[styles.iconInner, { backgroundColor: `${item.accentColor}20` }]}>
+                  <Ionicons name={item.icon} size={64} color={item.accentColor} />
+                </View>
               </View>
+
+              <Text style={styles.title}>
+                {item.title}{' '}
+                <Text style={{ color: item.accentColor }}>{item.highlight}</Text>
+              </Text>
+
+              <Text style={styles.description}>{item.description}</Text>
             </View>
-
-            <Text style={styles.title}>
-              {item.title}{' '}
-              <Text style={{ color: item.accentColor }}>{item.highlight}</Text>
-            </Text>
-
-            <Text style={styles.description}>{item.description}</Text>
           </View>
         )}
       />
@@ -235,6 +237,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 10,
+    width: '100%',
+    maxWidth: 640,
+    alignSelf: 'center',
   },
   brandRow: {
     flexDirection: 'row',
@@ -281,7 +286,13 @@ const styles = StyleSheet.create({
   slide: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 32,
+    paddingHorizontal: 20,
+  },
+  slideInner: {
+    width: '100%',
+    maxWidth: 480,
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   iconCircle: {
     width: 140,
@@ -334,6 +345,9 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: 24,
     paddingBottom: 24,
+    width: '100%',
+    maxWidth: 520,
+    alignSelf: 'center',
   },
   actionRow: {
     flexDirection: 'row',

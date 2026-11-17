@@ -218,6 +218,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: colors.background,
+    width: '100%',
+    maxWidth: 960,
+    alignSelf: 'center',
   },
   suggestionsContainer: {
     paddingVertical: 10,

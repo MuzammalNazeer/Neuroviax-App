@@ -181,6 +181,9 @@ const styles = StyleSheet.create({
   summaryContainer: {
     paddingHorizontal: 16,
     paddingTop: 12,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   summaryCard: {
     padding: 16,
@@ -223,6 +226,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 14,
     paddingBottom: 6,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   listTitle: {
     fontSize: 15,
@@ -231,6 +237,9 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: 16,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   expenseCard: {
     marginBottom: 10,
@@ -267,6 +276,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
+    width: '100%',
+    maxWidth: 600,
+    alignSelf: 'center',
   },
   modalHeader: {
     flexDirection: 'row',

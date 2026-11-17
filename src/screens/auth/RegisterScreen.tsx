@@ -408,6 +408,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 16,
     flexGrow: 1,
+    width: '100%',
+    maxWidth: 500,
+    alignSelf: 'center',
   },
   backBtn: {
     width: 40,

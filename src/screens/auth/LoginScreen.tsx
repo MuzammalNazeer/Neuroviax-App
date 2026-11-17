@@ -402,6 +402,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     justifyContent: 'center',
     flexGrow: 1,
+    width: '100%',
+    maxWidth: 480,
+    alignSelf: 'center',
   },
   header: {
     alignItems: 'center',

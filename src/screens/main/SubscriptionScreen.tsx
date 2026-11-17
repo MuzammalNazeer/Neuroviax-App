@@ -151,6 +151,9 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+    width: '100%',
+    maxWidth: 840,
+    alignSelf: 'center',
   },
   banner: {
     backgroundColor: colors.cardBg,

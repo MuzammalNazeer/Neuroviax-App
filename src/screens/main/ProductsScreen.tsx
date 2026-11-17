@@ -189,6 +189,9 @@ const styles = StyleSheet.create({
   },
   listContent: {
     padding: 16,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   productCard: {
     marginBottom: 12,
@@ -240,6 +243,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
+    width: '100%',
+    maxWidth: 600,
+    alignSelf: 'center',
   },
   modalHeader: {
     flexDirection: 'row',

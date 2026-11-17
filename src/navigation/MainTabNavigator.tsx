@@ -111,6 +111,18 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 88 : 65,
     paddingBottom: Platform.OS === 'ios' ? 28 : 10,
     paddingTop: 8,
+    ...(Platform.OS === 'web'
+      ? {
+          maxWidth: 720,
+          width: '100%',
+          alignSelf: 'center' as const,
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
+          borderLeftWidth: 1,
+          borderRightWidth: 1,
+          borderColor: colors.divider,
+        }
+      : {}),
   },
   tabLabel: {
     fontSize: 11,

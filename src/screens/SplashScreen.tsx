@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   Animated,
-  Dimensions,
+  useWindowDimensions,
   Easing,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -12,13 +12,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { useAuth } from '../context/AuthContext';
 
-const { width } = Dimensions.get('window');
-
 interface SplashScreenProps {
   navigation: any;
 }
 
 export const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
+  const { width } = useWindowDimensions();
+  const maxBarWidth = Math.min(width * 0.7, 300);
   const { isAuthenticated, isLoading } = useAuth();
   const [statusText, setStatusText] = useState('Initializing AI Neural Engine...');
   
@@ -91,7 +91,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
 
   const progressWidth = progressAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, width * 0.7],
+    outputRange: [0, maxBarWidth],
   });
 
   return (
@@ -201,7 +201,9 @@ const styles = StyleSheet.create({
   progressContainer: {
     marginTop: 48,
     alignItems: 'center',
-    width: width * 0.7,
+    width: '100%',
+    maxWidth: 300,
+    alignSelf: 'center',
   },
   progressBarBackground: {
     width: '100%',

@@ -66,6 +66,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     borderBottomWidth: 1,
     borderBottomColor: colors.divider,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   left: {
     flexDirection: 'row',

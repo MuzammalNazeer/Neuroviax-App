@@ -315,6 +315,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: colors.divider,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   businessRow: {
     flexDirection: 'row',
@@ -379,6 +382,9 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 16,
     paddingTop: 16,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   kpiRow: {
     flexDirection: 'row',

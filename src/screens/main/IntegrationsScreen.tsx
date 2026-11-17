@@ -92,6 +92,9 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: 16,
+    width: '100%',
+    maxWidth: 1240,
+    alignSelf: 'center',
   },
   card: {
     marginBottom: 10,

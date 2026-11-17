@@ -76,6 +76,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 24,
     paddingVertical: 16,
+    width: '100%',
+    maxWidth: 480,
+    alignSelf: 'center',
   },
   backBtn: {
     width: 40,
