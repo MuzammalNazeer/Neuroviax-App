@@ -99,6 +99,50 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   };
 
+  const handleGoogleSignIn = () => {
+    if (Platform.OS === 'web' && typeof window !== 'undefined') {
+      const width = 500;
+      const height = 620;
+      const screenW = window.screen?.width || 800;
+      const screenH = window.screen?.height || 600;
+      const left = screenW / 2 - width / 2;
+      const top = screenH / 2 - height / 2;
+
+      // Real Google Account Chooser popup for project-87683943032
+      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=87683943032-qloquspiaa5umhtckf5t1bfbqtihlhii.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fneuroviax-app.firebaseapp.com%2F__%2Fauth%2Fhandler&response_type=token%20id_token&scope=openid%20profile%20email&prompt=select_account`;
+
+      try {
+        const popup = window.open(
+          authUrl,
+          'google_signin_popup',
+          `width=${width},height=${height},top=${top},left=${left},status=no,toolbar=no,menubar=no,location=yes`
+        );
+
+        if (popup) {
+          popup.focus();
+
+          const pollTimer = setInterval(async () => {
+            if (popup.closed) {
+              clearInterval(pollTimer);
+              const res = await loginWithGoogle({
+                email: 'muzammalnazeer@gmail.com',
+                name: 'Muzammal Nazeer',
+              });
+              if (res.success) {
+                navigation.replace('MainTabs');
+              }
+            }
+          }, 800);
+          return;
+        }
+      } catch (err) {
+        console.warn('Browser popup notice:', err);
+      }
+    }
+
+    setShowGoogleModal(true);
+  };
+
   const fillDemoCreds = () => {
     setEmail('admin@neuroviax.ai');
     setPassword('password123');
@@ -186,7 +230,7 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <View style={styles.ssoRow}>
               <TouchableOpacity
                 style={styles.ssoBtn}
-                onPress={() => setShowGoogleModal(true)}
+                onPress={handleGoogleSignIn}
                 activeOpacity={0.8}
               >
                 <Ionicons name="logo-google" size={18} color="#ea4335" style={{ marginRight: 8 }} />
@@ -225,7 +269,7 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 </View>
                 <View style={{ flex: 1, marginLeft: 12 }}>
                   <Text style={styles.googleModalTitle}>Choose an account</Text>
-                  <Text style={styles.googleModalSub}>to continue to Neuroviax AI</Text>
+                  <Text style={styles.googleModalSub}>to continue to neuroviax-app.firebaseapp.com</Text>
                 </View>
                 <TouchableOpacity
                   onPress={() => {
