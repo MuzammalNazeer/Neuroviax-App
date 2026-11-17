@@ -1,8 +1,10 @@
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MOCK_KPIS, MOCK_ORDERS, MOCK_PRODUCTS, MOCK_AI_ASSISTANTS, MOCK_CUSTOMERS, MOCK_EXPENSES } from './mockData';
 
-// Configurable Base URL - Default is local backend or configurable in settings
-export const DEFAULT_API_URL = 'http://10.0.2.2:5000/api'; // Android emulator localhost alias
+// Configurable Base URL - auto selects based on platform
+export const DEFAULT_API_URL =
+  Platform.OS === 'android' ? 'http://10.0.2.2:5000/api' : 'http://localhost:5000/api';
 
 class ApiService {
   private baseUrl: string = DEFAULT_API_URL;
